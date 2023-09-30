@@ -2,6 +2,8 @@ from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
+from dotenv import load_dotenv
+
 
 from db import db
 from blocklist import BLOCKLIST
@@ -14,6 +16,8 @@ from resources.tag import blp as TagBlueprint
 
 def create_app(db_url=None):
     app = Flask(__name__)
+    load_dotenv()
+    
     app.config["API_TITLE"] = "Stores REST API"
     app.config["API_VERSION"] = "v1"
     app.config["OPENAPI_VERSION"] = "3.0.3"
@@ -32,12 +36,12 @@ def create_app(db_url=None):
     app.config["JWT_SECRET_KEY"] = "jose"
     jwt = JWTManager(app)
 
-    # @jwt.additional_claims_loader
-    # def add_claims_to_jwt(identity):
+    @jwt.additional_claims_loader
+    def add_claims_to_jwt(identity):
     #     # TODO: Read from a config file instead of hard-coding
-    #     if identity == 1:
-    #         return {"is_admin": True}
-    #     return {"is_admin": False}
+         if identity == 1:
+             return {"is_admin": True}
+         return {"is_admin": False}
 
     @jwt.token_in_blocklist_loader
     def check_if_token_in_blocklist(jwt_header, jwt_payload):

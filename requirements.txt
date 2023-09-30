@@ -6,3 +6,5 @@ marshmallow
 python-dotenv
 gunicorn
 Flask-Migrate
+psycopg2
+python-dotenv
