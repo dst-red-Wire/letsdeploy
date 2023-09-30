@@ -3,7 +3,7 @@ from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
-
+import os
 
 from db import db
 from blocklist import BLOCKLIST
@@ -14,7 +14,8 @@ from resources.store import blp as StoreBlueprint
 from resources.tag import blp as TagBlueprint
 
 
-def create_app(db_url=None):
+def create_app(db_url= None):
+
     app = Flask(__name__)
     load_dotenv()
     
@@ -26,7 +27,7 @@ def create_app(db_url=None):
     app.config[
         "OPENAPI_SWAGGER_UI_URL"
     ] = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
-    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or "sqlite:///data.db"
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_url or os.getenv("DATABASE_URL", "sqlite:///data.db")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["PROPAGATE_EXCEPTIONS"] = True
     db.init_app(app)
