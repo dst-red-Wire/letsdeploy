@@ -1,0 +1,22 @@
+
+
+0- ENVIRONNEMENT
+python -m venv .venv
+.venv/Scripts/activate
+
+
+pip install -r requirements.txt
+flask run
+
+
+IMAGE
+docker build -t flask-smorest-apis .
+
+contener
+docker run -dp 5005:5000 flask-smorest-apis 
+
+volume
+docker run -dp 5005:5000 -w /app -v "($pwd):/app" flask-smorest-apis 
+
+documentation
+http://127.0.0.1:5005/swagger-ui
